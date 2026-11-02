@@ -1,0 +1,225 @@
+{%- style -%}
+  .faq-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  .faq-section-{{ section.id }} .faq-wrapper {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .faq-section-{{ section.id }} .section-heading {
+    text-align: center;
+    font-size: {{ section.settings.heading_size }}px;
+    margin-bottom: 12px;
+  }
+  .faq-section-{{ section.id }} .section-subheading {
+    text-align: center;
+    color: rgba(var(--color-foreground), 0.6);
+    font-size: 16px;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .faq-section-{{ section.id }} .faq-item {
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.1);
+  }
+  .faq-section-{{ section.id }} .faq-item:first-child {
+    border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  }
+  .faq-section-{{ section.id }} .faq-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: {{ section.settings.item_padding }}px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: {{ section.settings.question_font_size }}px;
+    font-weight: 600;
+    text-align: left;
+    color: rgb(var(--color-foreground));
+    font-family: inherit;
+    line-height: 1.4;
+  }
+  .faq-section-{{ section.id }} .faq-question:hover {
+    opacity: 0.75;
+  }
+  .faq-section-{{ section.id }} .faq-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    transition: transform 0.3s ease;
+    stroke: rgb(var(--color-foreground));
+  }
+  .faq-section-{{ section.id }} .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  .faq-section-{{ section.id }} .faq-answer {
+    padding: 0 0 {{ section.settings.item_padding }}px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(var(--color-foreground), 0.7);
+    max-width: 90%;
+  }
+  .faq-section-{{ section.id }} .faq-answer a {
+    color: rgb(var(--color-foreground));
+    text-decoration: underline;
+  }
+{%- endstyle -%}
+
+<div class="faq-section-{{ section.id }} color-{{ section.settings.color_scheme }}">
+  <div class="faq-wrapper">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="section-heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="section-subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    <div class="faq-list">
+      {%- for block in section.blocks -%}
+        <details class="faq-item" {{ block.shopify_attributes }}{% if section.settings.open_first and forloop.first %} open{% endif %}>
+          <summary class="faq-question">
+            <span>{{ block.settings.question }}</span>
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </summary>
+          <div class="faq-answer">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find answers to common questions about our products and services"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 600,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Question font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "label": "Item padding",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first item by default",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a 30-day return policy on all unused items in their original packaging. Simply contact our support team to initiate a return.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "category": "Content",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "What is your return policy?", "answer": "<p>We offer a 30-day return policy on all unused items. Contact us to start a return.</p>" } },
+        { "type": "faq", "settings": { "question": "How long does shipping take?", "answer": "<p>Standard shipping takes 3-5 business days. Express shipping is available for 1-2 day delivery.</p>" } },
+        { "type": "faq", "settings": { "question": "Do you ship internationally?", "answer": "<p>Yes! We ship to over 50 countries worldwide. Shipping rates vary by destination.</p>" } },
+        { "type": "faq", "settings": { "question": "How can I track my order?", "answer": "<p>Once shipped, you'll receive a tracking number via email. Use it on our tracking page or the carrier's website.</p>" } },
+        { "type": "faq", "settings": { "question": "What payment methods do you accept?", "answer": "<p>We accept all major credit cards, PayPal, Apple Pay, and Google Pay.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
